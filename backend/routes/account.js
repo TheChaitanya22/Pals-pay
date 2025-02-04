@@ -1,11 +1,11 @@
 const { Router } = require("express");
-const { get, default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const { Accounts } = require("../db");
-const accountRouter = Router();
+const router = Router();
 
 
 
-accountRouter.get("/balance", async function(req, res){
+router.get("/balance", async function(req, res){
     const account = await Accounts.findOne({
         userId: req.userId,
     });
@@ -15,7 +15,7 @@ accountRouter.get("/balance", async function(req, res){
     })
 })
 
-accountRouter.get("/transfer", async function(req, res){
+router.get("/transfer", async function(req, res){
     const session = await mongoose.startSession();
 
     session.startTransaction();
@@ -43,5 +43,5 @@ accountRouter.get("/transfer", async function(req, res){
 });
 
 module.exports = {
-    accountRouter,
+    accountRouter: router
 }

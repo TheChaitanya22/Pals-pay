@@ -15,7 +15,7 @@ app.use("api/v1", mainRouter);
 
 
 async function main(){
-    await mongoose.connect(process.env.MOGODB_URL);
+    await mongoose.connect(process.env.MONGO_URL);
     app.listen(3000);
 }
 

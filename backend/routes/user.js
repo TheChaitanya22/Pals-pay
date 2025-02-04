@@ -1,6 +1,6 @@
 const { User, Accounts } = require("../db");
 const { Router } = require("express");
-const userRouter = Router();
+const router = Router();
 const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
@@ -14,7 +14,7 @@ const signupBody = z.object({
     })
 
 
-userRouter.post("/signup",userMiddleware ,async function (req, res) {
+router.post("/signup",userMiddleware ,async function (req, res) {
     
 
     const parsedSignupData = signupBody.safeParse(req.body);
@@ -44,7 +44,7 @@ userRouter.post("/signup",userMiddleware ,async function (req, res) {
 
         await Accounts.create({
             userId,
-            balance: 1 + Math.random() * 10000
+            balance: 1 + Math.floor(Math.random() * 10000)
         })
 
         const userId = user._id;
@@ -64,7 +64,7 @@ const sigininBody = z.object({
     password: z.string().min(3).max(20),
 })
 
-userRouter.post("/signin", async function (req, res) {
+router.post("/signin", async function (req, res) {
 
     const parsedSigninData = sigininBody.safeParse(req.body);
 
@@ -98,7 +98,7 @@ userRouter.post("/signin", async function (req, res) {
 
 });
 
-userRouter.put("/", authMiddleware, async function (req, res) {
+router.put("/", authMiddleware, async function (req, res) {
     const { success } = updateBody.safeParse(req.body);
     if (!success) {
         res.status(411).json({
@@ -115,7 +115,7 @@ userRouter.put("/", authMiddleware, async function (req, res) {
     })
 });
 
-user.Router.get("/bulk", async function (req, res) {
+router.get("/bulk", async function (req, res) {
     const filter = req.queru.filter || "";
 
     const users = await User.find({
@@ -140,5 +140,5 @@ user.Router.get("/bulk", async function (req, res) {
 })
 
 module.exports = {
-    userRouter
+    userRouter: router,
 };
