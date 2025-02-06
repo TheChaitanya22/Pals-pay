@@ -2,6 +2,8 @@ import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { Inputbox } from "../components/Inputbox";
 import { Subheading } from "../components/Subheading";
+import { Warning } from "../components/Warning";
+
 
 export const Signup = () => {
     return <div className="bg-slate-300 h-screen flex justify-center">
@@ -12,8 +14,9 @@ export const Signup = () => {
                 <Inputbox label={"First Name"} placeholder={"John"} />
                 <Inputbox label={"Last Name"} placeholder={"Doe"} />
                 <Inputbox label={"Email"} placeholder={"John@gmail.com"} />
-                <Inputbox label={"Passwrod"} placeholder={"123456"} />
+                <Inputbox label={"Password"} placeholder={"123456"} />
                 <Button label={"Sign up"}/>
+                <Warning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
             </div>
         </div>
     </div>
