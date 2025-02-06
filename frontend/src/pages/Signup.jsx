@@ -1,3 +1,4 @@
+import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { Inputbox } from "../components/Inputbox";
 import { Subheading } from "../components/Subheading";
@@ -12,6 +13,7 @@ export const Signup = () => {
                 <Inputbox label={"Last Name"} placeholder={"Doe"} />
                 <Inputbox label={"Email"} placeholder={"John@gmail.com"} />
                 <Inputbox label={"Passwrod"} placeholder={"123456"} />
+                <Button label={"Sign up"}/>
             </div>
         </div>
     </div>
