@@ -7,14 +7,14 @@ const { JWT_SECRET } = require("../config");
 const { userMiddleware, authMiddleware } = require("../middleware");
 
 const signupBody = z.object({
-        fisrtName: z.string().min(3).max(20),
+        firstName: z.string().min(3).max(20),
         lastName: z.string().min(3).max(20),
         userName: z.string().email(),
         password: z.string().min(3).max(20),
     })
 
 
-router.post("/signup",userMiddleware ,async function (req, res) {
+router.post("/signup" ,async function (req, res) {
     
 
     const parsedSignupData = signupBody.safeParse(req.body);
@@ -36,18 +36,18 @@ router.post("/signup",userMiddleware ,async function (req, res) {
         })
     }
         const user = await User.create({
-            fisrtName: req.body.fisrtName,
+            firstName: req.body.firstName,
             lastName: req.body.lastName,
             userName: req.body.userName,
             password: req.body.password,
         })
 
+        const userId = user._id;
         await Accounts.create({
             userId,
             balance: 1 + Math.floor(Math.random() * 10000)
         })
 
-        const userId = user._id;
         const token = jwt.sign({
             userId
         },JWT_SECRET);
@@ -64,7 +64,7 @@ const sigininBody = z.object({
     password: z.string().min(3).max(20),
 })
 
-router.post("/signin", async function (req, res) {
+router.post("/signin",userMiddleware, async function (req, res) {
 
     const parsedSigninData = sigininBody.safeParse(req.body);
 
@@ -116,7 +116,7 @@ router.put("/", authMiddleware, async function (req, res) {
 });
 
 router.get("/bulk", async function (req, res) {
-    const filter = req.queru.filter || "";
+    const filter = req.query.filter || "";
 
     const users = await User.find({
         $or: [{
