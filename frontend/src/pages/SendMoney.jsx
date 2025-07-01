@@ -10,10 +10,12 @@ export const SendMoney = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [redirect, setRedirect] = useState("");
 
   const handleTransfer = async () => {
     if (!amount || Number(amount) <= 0) {
       setMessage("Please enter a valid amount");
+      serRedirect("");
       return;
     }
 
@@ -33,6 +35,7 @@ export const SendMoney = () => {
       );
 
       setMessage("Transfer successful!");
+      setRedirect("Redirecting to dashboard...");
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
@@ -40,9 +43,10 @@ export const SendMoney = () => {
       setMessage(
         error?.response?.data?.messsage || "Transfer failed. Please try again."
       );
+      setRedirect("Redirecting to dashboard...");
       setTimeout(() => {
         navigate("/dashboard");
-      }, 4000);
+      }, 3000);
     } finally {
       setLoading(false);
     }
@@ -88,7 +92,7 @@ export const SendMoney = () => {
             }`}
           >
             {message}
-            <div>Redirecting to dashboard...</div>
+            <div>{redirect}</div>
           </div>
         )}
 
