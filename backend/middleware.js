@@ -1,30 +1,26 @@
 const { JWT_SECRET } = require("./config");
 const jwt = require("jsonwebtoken");
-const { z } = require("zod");
 
-function userMiddleware (req, res, next) {
-    const token = req.headers.token;
-    const decoded = jwt.verify(token , JWT_SECRET);
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-    if (decoded) {
-        req.userId = decoded.userId;
-        next();
-    } else {
-        res.status(403).json ({
-            message :"You are not signed in!"
-        })
-    }
-}
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(403).json({});
+  }
 
-function authMiddleware (req, res, next) {
-    const updateBody = z.object({
-        fisrtName: z.string().min(3).max(20).optional(),
-        lastName: z.string().min(3).max(20).optional(),
-        password: z.string().min(3).max(20).optional(),
-    })
-}
+  const token = authHeader.split(" ")[1];
 
- module.exports = {
-    userMiddleware,
-    authMiddleware,
- } 
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    req.userId = decoded.userId;
+
+    next();
+  } catch (err) {
+    return res.status(403).json({});
+  }
+};
+
+module.exports = {
+  authMiddleware,
+};
